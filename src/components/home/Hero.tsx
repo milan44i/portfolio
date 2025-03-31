@@ -59,7 +59,7 @@ export default function Hero() {
       const mouseY = e.clientY - canvasRect.top;
 
       // Determine direction based on movement
-      let newDirection = character.direction;
+      let newDirection: "up" | "down" | "left" | "right";
 
       if (Math.abs(mouseX - prevPosition.x) > Math.abs(mouseY - prevPosition.y)) {
         // Horizontal movement is greater
@@ -74,8 +74,8 @@ export default function Hero() {
 
       // Update character position and direction
       setCharacter({
-        x: mouseX,
-        y: mouseY,
+        x: mouseX - 20,
+        y: mouseY - 20,
         direction: newDirection,
         isMoving: true,
       });
@@ -238,7 +238,7 @@ export default function Hero() {
               className="inline-block pixel-border bg-slate-800/60 backdrop-blur-sm px-8 py-4 mb-6 text-yellow-400 text-lg"
               whileHover={{ scale: 1.05 }}
             >
-              <h1 className="pixel-text">React Developer</h1>
+              <h1 className="pixel-text">Software Engineer</h1>
             </motion.div>
 
             <motion.h1
@@ -247,7 +247,7 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.8 }}
             >
-              Frontend Developer <br />
+              Frontend Lead Developer<br />
               <span className="text-blue-400">React & React Native</span> Specialist
             </motion.h1>
 

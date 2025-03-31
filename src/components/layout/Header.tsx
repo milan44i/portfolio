@@ -88,7 +88,7 @@ export default function Header() {
               <div className="w-3 h-3 bg-white rounded-full"></div>
             </div>
           </motion.div>
-          <span className="ml-3 text-lg pixel-text text-white">React Dev</span>
+          <span className="ml-3 text-lg pixel-text text-white">Anja Miletić</span>
         </Link>
 
         <nav className="hidden md:flex space-x-1">
