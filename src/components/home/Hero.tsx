@@ -20,6 +20,7 @@ export default function Hero() {
     direction: 'down',
     isMoving: false,
   });
+  const [prevPosition, setPrevPosition] = useState({ x: 50, y: 50 });
 
   const controls = useAnimation();
   const textControls = useAnimation();
@@ -42,57 +43,67 @@ export default function Hero() {
     sequence();
   }, [controls, textControls]);
 
-  // Handle keyboard movement for pixel character
+  // Handle mouse movement for pixel character
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
-    const handleKeyDown = (e: KeyboardEvent) => {
-      const speed = 5;
-      let newX = character.x;
-      let newY = character.y;
+    const handleMouseMove = (e: MouseEvent) => {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+
+      // Get canvas bounds
+      const canvasRect = canvas.getBoundingClientRect();
+
+      // Calculate mouse position relative to canvas
+      const mouseX = e.clientX - canvasRect.left;
+      const mouseY = e.clientY - canvasRect.top;
+
+      // Determine direction based on movement
       let newDirection = character.direction;
 
-      switch (e.key) {
-        case 'ArrowUp':
-          newY = Math.max(0, character.y - speed);
-          newDirection = 'up';
-          break;
-        case 'ArrowDown':
-          newY = Math.min(window.innerHeight - 50, character.y + speed);
-          newDirection = 'down';
-          break;
-        case 'ArrowLeft':
-          newX = Math.max(0, character.x - speed);
-          newDirection = 'left';
-          break;
-        case 'ArrowRight':
-          newX = Math.min(window.innerWidth - 50, character.x + speed);
-          newDirection = 'right';
-          break;
-        default:
-          return;
+      if (Math.abs(mouseX - prevPosition.x) > Math.abs(mouseY - prevPosition.y)) {
+        // Horizontal movement is greater
+        newDirection = mouseX > prevPosition.x ? 'right' : 'left';
+      } else {
+        // Vertical movement is greater
+        newDirection = mouseY > prevPosition.y ? 'down' : 'up';
       }
 
+      // Update previous position
+      setPrevPosition({ x: mouseX, y: mouseY });
+
+      // Update character position and direction
       setCharacter({
-        x: newX,
-        y: newY,
+        x: mouseX,
+        y: mouseY,
         direction: newDirection,
         isMoving: true,
       });
+
+      // Set character to not moving after a brief delay
+      setTimeout(() => {
+        setCharacter(prev => ({ ...prev, isMoving: false }));
+      }, 100);
     };
 
-    const handleKeyUp = () => {
-      setCharacter(prev => ({ ...prev, isMoving: false }));
+    // Throttle mouse move events
+    let throttleTimeout: NodeJS.Timeout | null = null;
+    const throttledMouseMove = (e: MouseEvent) => {
+      if (!throttleTimeout) {
+        throttleTimeout = setTimeout(() => {
+          handleMouseMove(e);
+          throttleTimeout = null;
+        }, 16); // roughly 60fps
+      }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('keyup', handleKeyUp);
+    window.addEventListener('mousemove', throttledMouseMove);
 
     return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('keyup', handleKeyUp);
+      window.removeEventListener('mousemove', throttledMouseMove);
+      if (throttleTimeout) clearTimeout(throttleTimeout);
     };
-  }, [character]);
+  }, [character.direction, prevPosition]);
 
   // Bomberman grid background
   useEffect(() => {
@@ -181,7 +192,7 @@ export default function Hero() {
       {/* Pixelated canvas background */}
       <canvas
         ref={canvasRef}
-        className="absolute inset-0 w-full h-full"
+        className="absolute inset-0 w-full h-full cursor-none"
         style={{ imageRendering: 'pixelated' }}
       />
 
@@ -198,7 +209,7 @@ export default function Hero() {
             }}
             transition={{
               duration: Math.random() * 10 + 5,
-              repeat: Number.POSITIVE_INFINITY,
+              repeat: Infinity,
               ease: "linear",
               delay: Math.random() * 5,
             }}
@@ -269,7 +280,7 @@ export default function Hero() {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.8, duration: 1 }}
             >
-              Use arrow keys to move the pixel character around!
+              Move your mouse around to control the pixel character!
             </motion.p>
           </motion.div>
         </motion.div>
