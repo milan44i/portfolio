@@ -1,34 +1,34 @@
-"use client";
+"use client"
 
-import { useEffect, useRef, useState } from 'react';
-import { motion, useAnimation } from 'framer-motion';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
+import { useEffect, useRef, useState } from "react"
+import { motion, useAnimation } from "framer-motion"
+import { Button } from "@/components/ui/button"
+import Link from "next/link"
 
 interface Character {
-  x: number;
-  y: number;
-  direction: 'up' | 'down' | 'left' | 'right';
-  isMoving: boolean;
+  x: number
+  y: number
+  direction: "up" | "down" | "left" | "right"
+  isMoving: boolean
 }
 
 export default function Hero() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null)
   const [character, setCharacter] = useState<Character>({
     x: 50,
     y: 50,
-    direction: 'down',
+    direction: "down",
     isMoving: false,
-  });
-  const [prevPosition, setPrevPosition] = useState({ x: 50, y: 50 });
+  })
+  const [prevPosition, setPrevPosition] = useState({ x: 50, y: 50 })
 
-  const controls = useAnimation();
-  const textControls = useAnimation();
+  const controls = useAnimation()
+  const textControls = useAnimation()
 
   // Animation sequence for the hero content
   useEffect(() => {
     const sequence = async () => {
-      await controls.start({ opacity: 1, y: 0, transition: { duration: 0.5 } });
+      await controls.start({ opacity: 1, y: 0, transition: { duration: 0.5 } })
       await textControls.start({
         opacity: 1,
         y: 0,
@@ -36,41 +36,43 @@ export default function Hero() {
           duration: 0.8,
           staggerChildren: 0.2,
           delayChildren: 0.3,
-        }
-      });
-    };
+        },
+      })
+    }
 
-    sequence();
-  }, [controls, textControls]);
+    sequence()
+  }, [controls, textControls])
 
   // Handle mouse movement for pixel character
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return
 
     const handleMouseMove = (e: MouseEvent) => {
-      const canvas = canvasRef.current;
-      if (!canvas) return;
+      const canvas = canvasRef.current
+      if (!canvas) return
 
       // Get canvas bounds
-      const canvasRect = canvas.getBoundingClientRect();
+      const canvasRect = canvas.getBoundingClientRect()
 
       // Calculate mouse position relative to canvas
-      const mouseX = e.clientX - canvasRect.left;
-      const mouseY = e.clientY - canvasRect.top;
+      const mouseX = e.clientX - canvasRect.left
+      const mouseY = e.clientY - canvasRect.top
 
       // Determine direction based on movement
-      let newDirection: "up" | "down" | "left" | "right";
+      let newDirection: "up" | "down" | "left" | "right"
 
-      if (Math.abs(mouseX - prevPosition.x) > Math.abs(mouseY - prevPosition.y)) {
+      if (
+        Math.abs(mouseX - prevPosition.x) > Math.abs(mouseY - prevPosition.y)
+      ) {
         // Horizontal movement is greater
-        newDirection = mouseX > prevPosition.x ? 'right' : 'left';
+        newDirection = mouseX > prevPosition.x ? "right" : "left"
       } else {
         // Vertical movement is greater
-        newDirection = mouseY > prevPosition.y ? 'down' : 'up';
+        newDirection = mouseY > prevPosition.y ? "down" : "up"
       }
 
       // Update previous position
-      setPrevPosition({ x: mouseX, y: mouseY });
+      setPrevPosition({ x: mouseX, y: mouseY })
 
       // Update character position and direction
       setCharacter({
@@ -78,122 +80,125 @@ export default function Hero() {
         y: mouseY - 20,
         direction: newDirection,
         isMoving: true,
-      });
+      })
 
       // Set character to not moving after a brief delay
       setTimeout(() => {
-        setCharacter(prev => ({ ...prev, isMoving: false }));
-      }, 100);
-    };
+        setCharacter((prev) => ({ ...prev, isMoving: false }))
+      }, 100)
+    }
 
     // Throttle mouse move events
-    let throttleTimeout: NodeJS.Timeout | null = null;
+    let throttleTimeout: NodeJS.Timeout | null = null
     const throttledMouseMove = (e: MouseEvent) => {
       if (!throttleTimeout) {
         throttleTimeout = setTimeout(() => {
-          handleMouseMove(e);
-          throttleTimeout = null;
-        }, 16); // roughly 60fps
+          handleMouseMove(e)
+          throttleTimeout = null
+        }, 16) // roughly 60fps
       }
-    };
+    }
 
-    window.addEventListener('mousemove', throttledMouseMove);
+    window.addEventListener("mousemove", throttledMouseMove)
 
     return () => {
-      window.removeEventListener('mousemove', throttledMouseMove);
-      if (throttleTimeout) clearTimeout(throttleTimeout);
-    };
-  }, [character.direction, prevPosition]);
+      window.removeEventListener("mousemove", throttledMouseMove)
+      if (throttleTimeout) clearTimeout(throttleTimeout)
+    }
+  }, [character.direction, prevPosition])
 
   // Bomberman grid background
   useEffect(() => {
-    if (typeof window === 'undefined') return;
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+    if (typeof window === "undefined") return
+    const canvas = canvasRef.current
+    if (!canvas) return
 
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
+    const ctx = canvas.getContext("2d")
+    if (!ctx) return
 
     // Set canvas dimensions
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth
+    canvas.height = window.innerHeight
 
     // Clear canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
 
     // Draw grid
-    const cellSize = 50;
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
-    ctx.lineWidth = 1;
+    const cellSize = 50
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.1)"
+    ctx.lineWidth = 1
 
     // Vertical lines
     for (let x = 0; x <= canvas.width; x += cellSize) {
-      ctx.beginPath();
-      ctx.moveTo(x, 0);
-      ctx.lineTo(x, canvas.height);
-      ctx.stroke();
+      ctx.beginPath()
+      ctx.moveTo(x, 0)
+      ctx.lineTo(x, canvas.height)
+      ctx.stroke()
     }
 
     // Horizontal lines
     for (let y = 0; y <= canvas.height; y += cellSize) {
-      ctx.beginPath();
-      ctx.moveTo(0, y);
-      ctx.lineTo(canvas.width, y);
-      ctx.stroke();
+      ctx.beginPath()
+      ctx.moveTo(0, y)
+      ctx.lineTo(canvas.width, y)
+      ctx.stroke()
     }
 
     // Draw random "blocks" in Bomberman style
-    ctx.fillStyle = 'rgba(100, 120, 180, 0.15)';
+    ctx.fillStyle = "rgba(100, 120, 180, 0.15)"
     for (let x = cellSize; x < canvas.width; x += cellSize * 2) {
       for (let y = cellSize; y < canvas.height; y += cellSize * 2) {
         if (Math.random() > 0.7) {
-          ctx.fillRect(x, y, cellSize, cellSize);
+          ctx.fillRect(x, y, cellSize, cellSize)
         }
       }
     }
 
     // Draw character
-    ctx.fillStyle = '#ffcc00';
-    ctx.fillRect(character.x, character.y, 20, 20);
+    ctx.fillStyle = "#ffcc00"
+    ctx.fillRect(character.x, character.y, 20, 20)
 
     // Draw character details based on direction
-    ctx.fillStyle = '#000';
-    switch(character.direction) {
-      case 'up':
-        ctx.fillRect(character.x + 5, character.y + 5, 3, 3);
-        ctx.fillRect(character.x + 12, character.y + 5, 3, 3);
-        ctx.fillRect(character.x + 8, character.y + 12, 4, 2);
-        break;
-      case 'down':
-        ctx.fillRect(character.x + 5, character.y + 8, 3, 3);
-        ctx.fillRect(character.x + 12, character.y + 8, 3, 3);
-        ctx.fillRect(character.x + 8, character.y + 15, 4, 2);
-        break;
-      case 'left':
-        ctx.fillRect(character.x + 5, character.y + 8, 3, 3);
-        ctx.fillRect(character.x + 8, character.y + 15, 4, 2);
-        break;
-      case 'right':
-        ctx.fillRect(character.x + 12, character.y + 8, 3, 3);
-        ctx.fillRect(character.x + 8, character.y + 15, 4, 2);
-        break;
+    ctx.fillStyle = "#000"
+    switch (character.direction) {
+      case "up":
+        ctx.fillRect(character.x + 5, character.y + 5, 3, 3)
+        ctx.fillRect(character.x + 12, character.y + 5, 3, 3)
+        ctx.fillRect(character.x + 8, character.y + 12, 4, 2)
+        break
+      case "down":
+        ctx.fillRect(character.x + 5, character.y + 8, 3, 3)
+        ctx.fillRect(character.x + 12, character.y + 8, 3, 3)
+        ctx.fillRect(character.x + 8, character.y + 15, 4, 2)
+        break
+      case "left":
+        ctx.fillRect(character.x + 5, character.y + 8, 3, 3)
+        ctx.fillRect(character.x + 8, character.y + 15, 4, 2)
+        break
+      case "right":
+        ctx.fillRect(character.x + 12, character.y + 8, 3, 3)
+        ctx.fillRect(character.x + 8, character.y + 15, 4, 2)
+        break
     }
 
     // If character is moving, add animation frame
     if (character.isMoving) {
       requestAnimationFrame(() => {
-        setCharacter(prev => ({ ...prev })); // Trigger re-render
-      });
+        setCharacter((prev) => ({ ...prev })) // Trigger re-render
+      })
     }
-  }, [character]);
+  }, [character])
 
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-slate-950 py-24 px-4">
+    <section
+      id="home"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-slate-950 py-24 px-4"
+    >
       {/* Pixelated canvas background */}
       <canvas
         ref={canvasRef}
         className="absolute inset-0 w-full h-full cursor-none"
-        style={{ imageRendering: 'pixelated' }}
+        style={{ imageRendering: "pixelated" }}
       />
 
       {/* Pixel dust particles effect */}
@@ -203,8 +208,8 @@ export default function Hero() {
             key={`particle-${i}`}
             className="absolute w-1 h-1 bg-blue-500 rounded-full opacity-80"
             animate={{
-              x: ['0%', '100%'],
-              y: ['0%', '100%'],
+              x: ["0%", "100%"],
+              y: ["0%", "100%"],
               opacity: [0, 0.8, 0],
             }}
             transition={{
@@ -247,8 +252,12 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.8 }}
             >
-              Frontend Lead Developer<br />
-              <span className="text-blue-400">React & React Native</span> Specialist
+              Frontend Engineer
+              <br />
+              <span className="text-blue-400">
+                React, Vue & TypeScript
+              </span>{" "}
+              Specialist
             </motion.h1>
 
             <motion.p
@@ -257,7 +266,9 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.8 }}
             >
-              Building modern, responsive web applications and mobile experiences with a focus on performance and user experience.
+              Frontend Engineer with 2+ years of experience in React, Vue, and
+              TypeScript, passionate about building clean, scalable, and
+              high-performance web applications.
             </motion.p>
 
             <motion.div
@@ -266,10 +277,19 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.8 }}
             >
-              <Button asChild size="lg" className="pixel-text bg-blue-600 hover:bg-blue-700">
+              <Button
+                asChild
+                size="lg"
+                className="pixel-text bg-blue-600 hover:bg-blue-700"
+              >
                 <Link href="#projects">View Projects</Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="pixel-text border-blue-600 text-blue-400">
+              <Button
+                asChild
+                variant="outline"
+                size="lg"
+                className="pixel-text border-blue-600 text-blue-400"
+              >
                 <Link href="#contact">Contact Me</Link>
               </Button>
             </motion.div>
@@ -286,5 +306,5 @@ export default function Hero() {
         </motion.div>
       </div>
     </section>
-  );
+  )
 }

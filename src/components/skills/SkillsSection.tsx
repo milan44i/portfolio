@@ -1,143 +1,148 @@
-"use client";
+"use client"
 
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Card, CardContent } from '@/components/ui/card';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { useState } from "react"
+import { motion } from "framer-motion"
+import { Card, CardContent } from "@/components/ui/card"
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 
 // Skills data
 interface Skill {
-  name: string;
-  level: number;
-  description: string;
-  icon: string;
+  name: string
+  level: number
+  description: string
+  icon: string
 }
 
 interface SkillCategory {
-  id: string;
-  name: string;
-  skills: Skill[];
+  id: string
+  name: string
+  skills: Skill[]
 }
 
 const skillCategories: SkillCategory[] = [
   {
-    id: 'frontend',
-    name: 'Frontend',
+    id: "frontend",
+    name: "Frontend",
     skills: [
       {
-        name: 'React',
+        name: "React",
         level: 90,
-        description: 'Building complex UIs with hooks, context and advanced patterns',
-        icon: '⚛️',
+        description:
+          "Building component-based UIs using modern patterns and React ecosystem",
+        icon: "⚛️",
       },
       {
-        name: 'React Native',
+        name: "Vue.js",
         level: 85,
-        description: 'Cross-platform mobile app development with native modules integration',
-        icon: '📱',
+        description:
+          "Creating reactive interfaces with Vue.js and its ecosystem",
+        icon: "🟩",
       },
       {
-        name: 'TypeScript',
+        name: "TypeScript",
         level: 85,
-        description: 'Type-safe code with interfaces, generics and utility types',
-        icon: '🔷',
+        description:
+          "Type-safe code with interfaces, generics and utility types",
+        icon: "🔷",
       },
       {
-        name: 'Next.js',
+        name: "Next.js",
         level: 80,
-        description: 'SSR, SSG, ISR and API routes for performant React applications',
-        icon: '▲',
+        description:
+          "Server-side rendering and static site generation for React applications",
+        icon: "▲",
       },
       {
-        name: 'CSS/SCSS',
+        name: "Tanstack Query",
         level: 85,
-        description: 'Modern layouts with Flexbox, Grid and responsive design',
-        icon: '🎨',
+        description:
+          "Data fetching and state management for modern applications",
+        icon: "📊",
       },
       {
-        name: 'Tailwind CSS',
+        name: "Tailwind CSS",
         level: 90,
-        description: 'Utility-first CSS framework for rapid UI development',
-        icon: '🌊',
+        description: "Utility-first CSS framework for rapid UI development",
+        icon: "🌊",
       },
     ],
   },
   {
-    id: 'backend',
-    name: 'Backend',
+    id: "state",
+    name: "State & Data",
     skills: [
       {
-        name: 'Node.js',
-        level: 75,
-        description: 'RESTful APIs and server-side applications',
-        icon: '🟢',
-      },
-      {
-        name: 'Express',
+        name: "Redux Toolkit",
         level: 80,
-        description: 'API development with middleware and routing',
-        icon: '🚂',
+        description: "Global state management with Redux Toolkit and RTK Query",
+        icon: "🔄",
       },
       {
-        name: 'Firebase',
+        name: "TanStack Query",
         level: 85,
-        description: 'Firestore, Auth, Cloud Functions and Storage',
-        icon: '🔥',
+        description: "Advanced data fetching, caching and synchronization",
+        icon: "📡",
       },
       {
-        name: 'MongoDB',
+        name: "MUI, SCSS, CSS",
+        level: 80,
+        description: "Styling libraries and techniques for modern UIs",
+        icon: "🎨",
+      },
+      {
+        name: "Quasar",
+        level: 75,
+        description: "Vue.js framework for building responsive applications",
+        icon: "💠",
+      },
+      {
+        name: "Shaden & MUI",
         level: 70,
-        description: 'Document database with schemas and aggregation',
-        icon: '🍃',
-      },
-      {
-        name: 'GraphQL',
-        level: 65,
-        description: 'Schema definition and resolvers for flexible APIs',
-        icon: '◆',
+        description: "Design systems and component libraries",
+        icon: "🧩",
       },
     ],
   },
   {
-    id: 'tools',
-    name: 'Tools & Others',
+    id: "tools",
+    name: "Tools & Others",
     skills: [
       {
-        name: 'Git',
+        name: "Git & Jira",
         level: 90,
-        description: 'Version control, branching strategies and collaborative workflows',
-        icon: '📂',
+        description: "Version control and project management tools",
+        icon: "📂",
       },
       {
-        name: 'Jest',
-        level: 75,
-        description: 'Unit and integration testing with mocking',
-        icon: '🧪',
-      },
-      {
-        name: 'CI/CD',
-        level: 70,
-        description: 'Automated testing and deployment pipelines',
-        icon: '🔄',
-      },
-      {
-        name: 'Figma',
+        name: "Vitest & Testing Library",
         level: 80,
-        description: 'UI design, prototyping and design system implementation',
-        icon: '🎯',
+        description: "Unit and integration testing frameworks",
+        icon: "🧪",
       },
       {
-        name: 'Performance Optimization',
+        name: "Storybook",
+        level: 75,
+        description: "Component documentation and UI development",
+        icon: "📚",
+      },
+      {
+        name: "Linux/AWS",
+        level: 70,
+        description: "Server environments and cloud infrastructure",
+        icon: "☁️",
+      },
+      {
+        name: "Responsive Design",
         level: 85,
-        description: 'Web vitals, bundle optimization and rendering strategies',
-        icon: '⚡',
+        description: "Optimizing UI for different device sizes",
+        icon: "📱",
       },
     ],
   },
-];
+]
 
 export default function SkillsSection() {
-  const [activeCategory, setActiveCategory] = useState(skillCategories[0].id);
+  const [activeCategory, setActiveCategory] = useState(skillCategories[0].id)
 
   // Animation variants
   const containerVariants = {
@@ -148,7 +153,7 @@ export default function SkillsSection() {
         staggerChildren: 0.1,
       },
     },
-  };
+  }
 
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
@@ -156,16 +161,16 @@ export default function SkillsSection() {
       y: 0,
       opacity: 1,
       transition: {
-        type: 'spring',
+        type: "spring",
         stiffness: 100,
       },
     },
-  };
+  }
 
   // Render the level bar in pixel art style
   const renderLevelBar = (level: number) => {
-    const blocks = 10;
-    const filledBlocks = Math.floor(level / 10);
+    const blocks = 10
+    const filledBlocks = Math.floor(level / 10)
 
     return (
       <div className="flex space-x-1 mt-2">
@@ -173,15 +178,13 @@ export default function SkillsSection() {
           <div
             key={`level-${index}`}
             className={`w-4 h-4 ${
-              index < filledBlocks
-                ? 'bg-blue-500'
-                : 'bg-slate-700'
+              index < filledBlocks ? "bg-blue-500" : "bg-slate-700"
             } pixel-corners`}
           />
         ))}
       </div>
-    );
-  };
+    )
+  }
 
   return (
     <section id="skills" className="py-20 bg-slate-900">
@@ -212,7 +215,9 @@ export default function SkillsSection() {
             transition={{ duration: 0.5, delay: 0.3 }}
             className="max-w-2xl mx-auto text-slate-300"
           >
-            A collection of skills and technologies I've mastered throughout my journey as a frontend developer, with a focus on React and React Native ecosystems.
+            A collection of skills and technologies I've mastered throughout my
+            journey as a frontend engineer, with a focus on React, Vue.js, and
+            TypeScript ecosystems.
           </motion.p>
         </div>
 
@@ -229,8 +234,8 @@ export default function SkillsSection() {
                   value={category.id}
                   className={`pixel-text text-sm px-6 py-2 ${
                     activeCategory === category.id
-                      ? 'data-[state=active]:bg-blue-600 data-[state=active]:text-white'
-                      : 'text-slate-400'
+                      ? "data-[state=active]:bg-blue-600 data-[state=active]:text-white"
+                      : "text-slate-400"
                   }`}
                 >
                   {category.name}
@@ -255,9 +260,13 @@ export default function SkillsSection() {
                         <div className="absolute top-0 right-0 w-16 h-16 bg-blue-900/20 rounded-bl-3xl flex items-center justify-center text-3xl">
                           {skill.icon}
                         </div>
-                        <h3 className="text-xl font-bold text-white mb-3 pixel-text">{skill.name}</h3>
+                        <h3 className="text-xl font-bold text-white mb-3 pixel-text">
+                          {skill.name}
+                        </h3>
                         {renderLevelBar(skill.level)}
-                        <p className="mt-4 text-slate-300 text-sm">{skill.description}</p>
+                        <p className="mt-4 text-slate-300 text-sm">
+                          {skill.description}
+                        </p>
                       </CardContent>
                     </Card>
                   </motion.div>
@@ -268,5 +277,5 @@ export default function SkillsSection() {
         </Tabs>
       </div>
     </section>
-  );
+  )
 }

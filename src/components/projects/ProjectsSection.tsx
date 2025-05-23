@@ -1,90 +1,100 @@
-"use client";
+"use client"
 
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Card, CardContent, CardFooter } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { useState } from "react"
+import { motion } from "framer-motion"
+import { Card, CardContent, CardFooter } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
 
 interface Project {
-  id: string;
-  title: string;
-  description: string;
-  tags: string[];
-  image: string;
-  demoUrl: string;
-  codeUrl: string;
-  featured: boolean;
+  id: string
+  title: string
+  description: string
+  tags: string[]
+  image: string
+  demoUrl: string
+  codeUrl: string
+  featured: boolean
 }
 
 const projects: Project[] = [
   {
-    id: 'project-1',
-    title: 'E-commerce App',
-    description: 'A full-featured e-commerce platform built with React, Redux, and Firebase. Features include user authentication, product filtering, cart management, and payment processing.',
-    tags: ['React', 'Firebase', 'Redux', 'Stripe'],
-    image: 'https://via.placeholder.com/600x400/0A2463/FFFFFF?text=E-commerce+App',
-    demoUrl: 'https://example.com',
-    codeUrl: 'https://github.com',
+    id: "project-1",
+    title: "Dynamic Report Dashboard",
+    description:
+      "An interactive data analysis platform with dynamic charts and data visualization. Implemented real-time filtering, sorting, and inline editing capabilities for massive datasets.",
+    tags: ["React", "TanStack Query", "Recharts", "TypeScript"],
+    image:
+      "https://via.placeholder.com/600x400/0A2463/FFFFFF?text=Data+Dashboard",
+    demoUrl: "https://example.com",
+    codeUrl: "https://github.com",
     featured: true,
   },
   {
-    id: 'project-2',
-    title: 'Weather Dashboard',
-    description: 'Real-time weather application with location detection, 5-day forecast, and weather alerts. Built with React and OpenWeather API.',
-    tags: ['React', 'API Integration', 'Geolocation'],
-    image: 'https://via.placeholder.com/600x400/247BA0/FFFFFF?text=Weather+App',
-    demoUrl: 'https://example.com',
-    codeUrl: 'https://github.com',
+    id: "project-2",
+    title: "Social Platform UI",
+    description:
+      "Developed comprehensive UI components for a social networking platform, including feed, filters, forms, and event calendar. Implemented internationalization and optimized for all devices.",
+    tags: ["React", "Next.js", "TypeScript", "Tailwind"],
+    image:
+      "https://via.placeholder.com/600x400/247BA0/FFFFFF?text=Social+Platform",
+    demoUrl: "https://example.com",
+    codeUrl: "https://github.com",
     featured: true,
   },
   {
-    id: 'project-3',
-    title: 'Task Manager',
-    description: 'Productivity application with task management, categories, and reminders. Features drag-and-drop interface and data persistence.',
-    tags: ['React', 'TypeScript', 'Drag & Drop API'],
-    image: 'https://via.placeholder.com/600x400/83253F/FFFFFF?text=Task+Manager',
-    demoUrl: 'https://example.com',
-    codeUrl: 'https://github.com',
+    id: "project-3",
+    title: "Inspection Workflow System",
+    description:
+      "Built specialized UI tools for windmill damage inspection, including custom Blade Picker interface and comprehensive inspection workflows with advanced state management.",
+    tags: ["React", "TypeScript", "RTK Query", "MUI"],
+    image:
+      "https://via.placeholder.com/600x400/83253F/FFFFFF?text=Inspection+System",
+    demoUrl: "https://example.com",
+    codeUrl: "https://github.com",
     featured: true,
   },
   {
-    id: 'project-4',
-    title: 'Fitness Tracker',
-    description: 'Mobile app for tracking workouts, nutrition, and fitness goals. Built with React Native and integrates with health APIs.',
-    tags: ['React Native', 'HealthKit', 'Google Fit'],
-    image: 'https://via.placeholder.com/600x400/1F6521/FFFFFF?text=Fitness+Tracker',
-    demoUrl: 'https://example.com',
-    codeUrl: 'https://github.com',
+    id: "project-4",
+    title: "Vue Component Library",
+    description:
+      "Created a reusable component library with Vue.js, including Tables, Inputs, Accordions, Checkboxes and more. Implemented with test-driven development practices.",
+    tags: ["Vue", "TypeScript", "Tailwind CSS", "Vitest"],
+    image:
+      "https://via.placeholder.com/600x400/1F6521/FFFFFF?text=Vue+Components",
+    demoUrl: "https://example.com",
+    codeUrl: "https://github.com",
     featured: false,
   },
   {
-    id: 'project-5',
-    title: 'Chat Application',
-    description: 'Real-time messaging app with user profiles, group chats, and media sharing capabilities. Uses WebSockets for instant messaging.',
-    tags: ['React', 'WebSockets', 'Firebase'],
-    image: 'https://via.placeholder.com/600x400/4C4C9D/FFFFFF?text=Chat+App',
-    demoUrl: 'https://example.com',
-    codeUrl: 'https://github.com',
+    id: "project-5",
+    title: "React Authentication System",
+    description:
+      "Implemented secure authentication workflow with JWT tokens, user roles, and permission-based access control. Includes password recovery and account management features.",
+    tags: ["React", "TypeScript", "Auth Flow", "Security"],
+    image: "https://via.placeholder.com/600x400/4C4C9D/FFFFFF?text=Auth+System",
+    demoUrl: "https://example.com",
+    codeUrl: "https://github.com",
     featured: false,
   },
   {
-    id: 'project-6',
-    title: 'Recipe Finder',
-    description: 'App for discovering recipes based on available ingredients, dietary restrictions, and meal preferences. Includes favorite recipes and meal planning.',
-    tags: ['React', 'API Integration', 'LocalStorage'],
-    image: 'https://via.placeholder.com/600x400/73628A/FFFFFF?text=Recipe+Finder',
-    demoUrl: 'https://example.com',
-    codeUrl: 'https://github.com',
+    id: "project-6",
+    title: "Responsive Admin Dashboard",
+    description:
+      "Developed comprehensive admin interfaces including analytics, user management, content moderation tools, and platform settings dashboards with responsive design.",
+    tags: ["React", "TypeScript", "Dashboard", "Admin UI"],
+    image:
+      "https://via.placeholder.com/600x400/73628A/FFFFFF?text=Admin+Dashboard",
+    demoUrl: "https://example.com",
+    codeUrl: "https://github.com",
     featured: false,
   },
-];
+]
 
 export default function ProjectsSection() {
-  const [filter, setFilter] = useState<'all' | 'featured'>('all');
+  const [filter, setFilter] = useState<"all" | "featured">("all")
 
-  const filteredProjects = filter === 'all'
-    ? projects
-    : projects.filter(project => project.featured);
+  const filteredProjects =
+    filter === "all" ? projects : projects.filter((project) => project.featured)
 
   // Animation variants
   const containerVariants = {
@@ -95,7 +105,7 @@ export default function ProjectsSection() {
         staggerChildren: 0.1,
       },
     },
-  };
+  }
 
   const itemVariants = {
     hidden: { opacity: 0, y: 30 },
@@ -103,12 +113,12 @@ export default function ProjectsSection() {
       opacity: 1,
       y: 0,
       transition: {
-        type: 'spring',
+        type: "spring",
         stiffness: 100,
         damping: 15,
       },
     },
-  };
+  }
 
   return (
     <section id="projects" className="py-20 bg-slate-950">
@@ -139,28 +149,34 @@ export default function ProjectsSection() {
             transition={{ duration: 0.5, delay: 0.3 }}
             className="max-w-2xl mx-auto text-slate-300"
           >
-            Explore my projects and applications built with React and React Native, showcasing responsive design, engaging user experiences, and solid code architecture.
+            Explore my projects built with React, Vue, and TypeScript,
+            showcasing clean code architecture, component-based design, and
+            optimized performance.
           </motion.p>
         </div>
 
         <div className="flex justify-center mb-12">
           <div className="bg-slate-800 rounded-full p-1 pixel-border inline-flex">
             <Button
-              variant={filter === 'all' ? 'default' : 'ghost'}
+              variant={filter === "all" ? "default" : "ghost"}
               size="sm"
-              onClick={() => setFilter('all')}
+              onClick={() => setFilter("all")}
               className={`pixel-text rounded-full mr-1 ${
-                filter === 'all' ? 'bg-blue-600 hover:bg-blue-700' : 'text-slate-300'
+                filter === "all"
+                  ? "bg-blue-600 hover:bg-blue-700"
+                  : "text-slate-300"
               }`}
             >
               All Projects
             </Button>
             <Button
-              variant={filter === 'featured' ? 'default' : 'ghost'}
+              variant={filter === "featured" ? "default" : "ghost"}
               size="sm"
-              onClick={() => setFilter('featured')}
+              onClick={() => setFilter("featured")}
               className={`pixel-text rounded-full ${
-                filter === 'featured' ? 'bg-blue-600 hover:bg-blue-700' : 'text-slate-300'
+                filter === "featured"
+                  ? "bg-blue-600 hover:bg-blue-700"
+                  : "text-slate-300"
               }`}
             >
               Featured
@@ -175,7 +191,7 @@ export default function ProjectsSection() {
           viewport={{ once: true }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
         >
-          {filteredProjects.map(project => (
+          {filteredProjects.map((project) => (
             <motion.div key={project.id} variants={itemVariants}>
               <Card className="relative bg-slate-800/70 border-slate-700 overflow-hidden h-full flex flex-col pixel-corners">
                 <div className="relative h-48 overflow-hidden">
@@ -193,11 +209,15 @@ export default function ProjectsSection() {
                 </div>
 
                 <CardContent className="flex-grow p-6">
-                  <h3 className="text-xl font-bold text-white mb-2 pixel-text">{project.title}</h3>
-                  <p className="text-slate-300 mb-4 text-sm">{project.description}</p>
+                  <h3 className="text-xl font-bold text-white mb-2 pixel-text">
+                    {project.title}
+                  </h3>
+                  <p className="text-slate-300 mb-4 text-sm">
+                    {project.description}
+                  </p>
 
                   <div className="flex flex-wrap gap-2 mt-4">
-                    {project.tags.map(tag => (
+                    {project.tags.map((tag) => (
                       <span
                         key={`${project.id}-${tag}`}
                         className="inline-block bg-slate-700 px-2 py-1 text-xs rounded-md text-blue-200"
@@ -209,13 +229,28 @@ export default function ProjectsSection() {
                 </CardContent>
 
                 <CardFooter className="p-6 pt-0 border-t border-slate-700 flex justify-between gap-4">
-                  <Button asChild className="w-1/2 bg-blue-600 hover:bg-blue-700 pixel-text">
-                    <a href={project.demoUrl} target="_blank" rel="noopener noreferrer">
+                  <Button
+                    asChild
+                    className="w-1/2 bg-blue-600 hover:bg-blue-700 pixel-text"
+                  >
+                    <a
+                      href={project.demoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       Demo
                     </a>
                   </Button>
-                  <Button asChild variant="outline" className="w-1/2 border-blue-600 text-blue-400 pixel-text">
-                    <a href={project.codeUrl} target="_blank" rel="noopener noreferrer">
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="w-1/2 border-blue-600 text-blue-400 pixel-text"
+                  >
+                    <a
+                      href={project.codeUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       Code
                     </a>
                   </Button>
@@ -226,5 +261,5 @@ export default function ProjectsSection() {
         </motion.div>
       </div>
     </section>
-  );
+  )
 }
